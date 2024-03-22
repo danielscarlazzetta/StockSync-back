@@ -65,3 +65,14 @@ npm install --save @nestjs/typeorm typeorm
 
 class validator install
 npm install --save class-validator
+
+
+json para crear usuario:
+{
+  "nombres": "Juan",
+  "apellidos": "Pérez",
+  "correo": "juan@example.com",
+  "numTel": "+56912345678",
+  "direccion": "Calle Principal",
+  "numero_direccion": 123
+}
