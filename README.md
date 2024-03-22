@@ -76,3 +76,6 @@ json para crear usuario:
   "direccion": "Calle Principal",
   "numero_direccion": 123
 }
+
+instalar mysql2
+npm install --save @nestjs/typeorm typeorm mysql2

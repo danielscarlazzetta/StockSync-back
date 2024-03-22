@@ -15,8 +15,6 @@ export class AuthService {
 
   async create(createUserDto: CreateAuthDto): Promise<Auth> {
     try {
-      //const newUser = await this.authRepository.create(createUserDto);
-
       const newUser = new Auth();
       newUser.nombres = createUserDto.nombres;
       newUser.apellidos = createUserDto.apellidos;
@@ -35,7 +33,6 @@ export class AuthService {
 
   async findAll(): Promise<Auth[]> {
     try {
-      console.log('cacas')
       return await this.authRepository.find();
     } catch (error) {
       throw new InternalServerErrorException('error');

@@ -14,7 +14,6 @@ export class AuthController {
 
   @Get()
   findAll() {
-    console.log('caca')
     return this.authService.findAll();
   }
 
