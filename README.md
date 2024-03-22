@@ -79,3 +79,48 @@ json para crear usuario:
 
 instalar mysql2
 npm install --save @nestjs/typeorm typeorm mysql2
+
+
+
+
+
+
+|- company/
+|  |- company.module.ts         // Módulo de empresas
+|  |- company.service.ts        // Servicio de empresas
+|  |- company.controller.ts     // Controlador de empresas
+|  |- company.entity.ts         // Entidad de empresa
+|  |- dto/                      // DTOs para las empresas
+|     |- create-company.dto.ts // DTO para crear empresa
+|- plan/
+|  |- plan.module.ts            // Módulo de planes
+|  |- plan.service.ts           // Servicio de planes
+|  |- plan.controller.ts        // Controlador de planes
+|  |- plan.entity.ts            // Entidad de plan
+|  |- dto/                      // DTOs para los planes
+|     |- select-plan.dto.ts 
+
+
+Selección de Plan:
+
+Ofrece a los usuarios la opción de seleccionar un plan entre los disponibles (básico, medio, pro).
+Almacena la selección del plan en la sesión o en la base de datos temporalmente.
+Registro de Usuario (Propietario de la Empresa):
+
+Después de seleccionar el plan, permite al usuario registrarse como el propietario de la empresa.
+Permite al usuario definir su rol dentro de la empresa (por ejemplo, administrador).
+Almacena la información del usuario registrado en la base de datos, marcándolo como el propietario de la empresa y asignándole el rol correspondiente.
+Creación de la Empresa:
+
+Después de que el propietario de la empresa se haya registrado, permite que cree una nueva empresa.
+Almacena la información de la empresa en la base de datos y asocia al propietario con la empresa creada.
+Creación de Usuarios Adicionales:
+
+Si el plan seleccionado permite más de un usuario, permite al propietario de la empresa agregar usuarios adicionales.
+Para planes medios y pro, permite al propietario de la empresa agregar usuarios adicionales y asignarles roles específicos dentro de la empresa.
+Asignación de Roles a los Usuarios:
+
+Después de agregar usuarios adicionales, permite al propietario de la empresa asignar roles específicos a cada usuario dentro de la empresa.
+Finalización del Registro:
+
+Una vez completado el proceso de registro y se han creado todos los usuarios y empresas necesarios, redirige al usuario a la página de inicio de sesión o a la página de inicio de la aplicación.
