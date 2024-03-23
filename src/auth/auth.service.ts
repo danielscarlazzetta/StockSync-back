@@ -13,6 +13,7 @@ export class AuthService {
     private authRepository: Repository<Auth>,
   ) { }
 
+  //! CREATE
   async create(createUserDto: CreateAuthDto): Promise<Auth> {
     try {
       const existingUser = await this.authRepository.findOne({ where: { correo: createUserDto.correo } });
@@ -43,34 +44,35 @@ export class AuthService {
     return newUser;
   }
 
+  //! FIND
 
 
-  async findOneByName2(nombres: string): Promise<Auth> {
-    try {
-      const user = await this.authRepository.findOne({ where: { nombres } });
-      if (!user) {
-        throw new NotFoundException('Usuario con el nombre especificado no encontrado');
-      }
-      return user;
-    } catch (error) {
-      throw new InternalServerErrorException('Error al buscar usuario por nombre: ' + error.message);
-    }
-  }
+  // async findOneByName2(nombres: string): Promise<Auth> {
+  //   try {
+  //     const user = await this.authRepository.findOne({ where: { nombres } });
+  //     if (!user) {
+  //       throw new NotFoundException('Usuario con el nombre especificado no encontrado');
+  //     }
+  //     return user;
+  //   } catch (error) {
+  //     throw new InternalServerErrorException('Error al buscar usuario por nombre: ' + error.message);
+  //   }
+  // }
 
-  async findOneByLastName2(apellidos: string): Promise<Auth | null> {
-    try {
-      const user = await this.authRepository.findOne({ where: { apellidos } });
-      if (!user) {
-        throw new NotFoundException('Usuario con el apellido especificado no encontrado');
-      }
-      return user;
-    } catch (error) {
-      throw new InternalServerErrorException('Error al buscar usuario por apellido: ' + error.message);
-    }
-  }
+  // async findOneByLastName2(apellidos: string): Promise<Auth | null> {
+  //   try {
+  //     const user = await this.authRepository.findOne({ where: { apellidos } });
+  //     if (!user) {
+  //       throw new NotFoundException('Usuario con el apellido especificado no encontrado');
+  //     }
+  //     return user;
+  //   } catch (error) {
+  //     throw new InternalServerErrorException('Error al buscar usuario por apellido: ' + error.message);
+  //   }
+  // }
   
 
-
+//! FIND NAME AND LAST NAME
   async findOneByName(nombres: string): Promise<Auth> {
     return await this.findOneByField('nombres', nombres);
   }
@@ -78,8 +80,6 @@ export class AuthService {
   async findOneByLastName(apellidos: string): Promise<Auth | null> {
     return await this.findOneByField('apellidos', apellidos);
   }
-
-
 
   async findOneByField(field: 'nombres' | 'apellidos', value: string): Promise<Auth> {
     try {
@@ -95,13 +95,47 @@ export class AuthService {
   }
 
 
-
-
-
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
+  //! FIND ALL
+  async findAll(): Promise<Auth[]> {
+    try {
+      return await this.authRepository.find();
+    } catch (error) {
+      throw new InternalServerErrorException('Error al buscar usuarios');
+    }
   }
+
+  //! FIND ID
+  async findOneById(id: string): Promise<Auth> {
+    try {
+      const user = await this.authRepository.findOne({ where: { id } });
+      if (!user) {
+        throw new NotFoundException('Usuario no encontrado');
+      }
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException('Error al buscar usuario por ID');
+    }
+  }
+
+
+  //! UPDATE
+  async update(id: string, updateAuthDto: UpdateAuthDto): Promise<Auth> {
+    try {
+      const existingUser = await this.findOneById(id);
+      // Aquí puedes agregar las validaciones necesarias utilizando el DTO de actualización
+      existingUser.nombres = updateAuthDto.nombres;
+      existingUser.apellidos = updateAuthDto.apellidos;
+      existingUser.correo = updateAuthDto.correo;
+      existingUser.direccion = updateAuthDto.direccion;
+      existingUser.numero_direccion = updateAuthDto.numero_direccion;
+      existingUser.numTel = updateAuthDto.numTel;
+
+      return await this.authRepository.save(existingUser);
+    } catch (error) {
+      throw new InternalServerErrorException('Error al actualizar usuario');
+    }
+  }
+
 
   remove(id: number) {
     return `This action removes a #${id} auth`;

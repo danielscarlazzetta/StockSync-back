@@ -7,17 +7,22 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  //! CREATE
   @Post()
   create(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.create(createAuthDto);
   }
 
-  /*
+  //! FIND
   @Get()
   findAll() {
     return this.authService.findAll();
-  }*/
+  }
 
+  @Get(':id')
+  async findOneById(@Param('id') id: string){
+    return this.authService.findOneById(id);
+  }
   
   @Get('nombre/:nombres')
   async findOneByName(@Param('nombres') nombres: string) {
@@ -26,15 +31,17 @@ export class AuthController {
   
   @Get('apellido/:apellidos')
   async findOneByLastName(@Param('apellidos') apellidos: string) {
-    return this.authService.findOneByName(apellidos);
+    return this.authService.findOneByLastName(apellidos);
   }
   
 
+  //! UPDATE
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
+    return this.authService.update(id, updateAuthDto);
   }
 
+  //! REMOVE
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.authService.remove(+id);
