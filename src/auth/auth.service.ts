@@ -43,35 +43,7 @@ export class AuthService {
     newUser.numTel = createUserDto.numTel;
     return newUser;
   }
-
-  //! FIND
-
-
-  // async findOneByName2(nombres: string): Promise<Auth> {
-  //   try {
-  //     const user = await this.authRepository.findOne({ where: { nombres } });
-  //     if (!user) {
-  //       throw new NotFoundException('Usuario con el nombre especificado no encontrado');
-  //     }
-  //     return user;
-  //   } catch (error) {
-  //     throw new InternalServerErrorException('Error al buscar usuario por nombre: ' + error.message);
-  //   }
-  // }
-
-  // async findOneByLastName2(apellidos: string): Promise<Auth | null> {
-  //   try {
-  //     const user = await this.authRepository.findOne({ where: { apellidos } });
-  //     if (!user) {
-  //       throw new NotFoundException('Usuario con el apellido especificado no encontrado');
-  //     }
-  //     return user;
-  //   } catch (error) {
-  //     throw new InternalServerErrorException('Error al buscar usuario por apellido: ' + error.message);
-  //   }
-  // }
-
-
+  
   //! FIND NAME AND LAST NAME
   async findOneByName(nombres: string): Promise<Auth> {
     return await this.findOneByField('nombres', nombres);

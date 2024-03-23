@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { SubscriptionPlan } from '../subscription-plan.enum';
 
 @Entity()
 export class Auth {
@@ -25,4 +26,7 @@ export class Auth {
 
   @CreateDateColumn({ type: 'timestamp' })
   fecha_Creacion: Date;
+
+  @Column({ type: 'enum', enum: SubscriptionPlan, default: SubscriptionPlan.BASICO })
+  plan: SubscriptionPlan;
 }
