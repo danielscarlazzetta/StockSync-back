@@ -1,7 +1,7 @@
 import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-import { Repository, FindOneOptions  } from 'typeorm';
+import { Repository, FindOneOptions } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
 
@@ -17,7 +17,7 @@ export class AuthService {
   async create(createUserDto: CreateAuthDto): Promise<Auth> {
     try {
       const existingUser = await this.authRepository.findOne({ where: { correo: createUserDto.correo } });
-      
+
       if (existingUser) {
         throw new ConflictException('El correo electrónico ya está en uso');
       } else {
@@ -70,9 +70,9 @@ export class AuthService {
   //     throw new InternalServerErrorException('Error al buscar usuario por apellido: ' + error.message);
   //   }
   // }
-  
 
-//! FIND NAME AND LAST NAME
+
+  //! FIND NAME AND LAST NAME
   async findOneByName(nombres: string): Promise<Auth> {
     return await this.findOneByField('nombres', nombres);
   }
@@ -119,25 +119,46 @@ export class AuthService {
 
 
   //! UPDATE
-  async update(id: string, updateAuthDto: UpdateAuthDto): Promise<Auth> {
+
+  //const existingUser = await this.findOneById(id);
+  //this.assignUpdateDtoToUser(existingUser, updateAuthDto);
+  //return await this.authRepository.save(existingUser);
+
+  async update(id: string, updateAuthDto: UpdateAuthDto): Promise<string> {
     try {
       const existingUser = await this.findOneById(id);
-      // Aquí puedes agregar las validaciones necesarias utilizando el DTO de actualización
-      existingUser.nombres = updateAuthDto.nombres;
-      existingUser.apellidos = updateAuthDto.apellidos;
-      existingUser.correo = updateAuthDto.correo;
-      existingUser.direccion = updateAuthDto.direccion;
-      existingUser.numero_direccion = updateAuthDto.numero_direccion;
-      existingUser.numTel = updateAuthDto.numTel;
+      const updatedUser = this.assignUpdateDtoToUser(existingUser, updateAuthDto);
 
-      return await this.authRepository.save(existingUser);
+      if (Object.values(updatedUser).every(value => value === null || value === '')) {
+        throw new InternalServerErrorException('No se ha actualizado nada');
+      }
+
+      await this.authRepository.save(updatedUser);
+      return 'Usuario actualizado exitosamente';
     } catch (error) {
       throw new InternalServerErrorException('Error al actualizar usuario');
     }
   }
 
+  private assignUpdateDtoToUser(user: Auth, updateAuthDto: UpdateAuthDto): Auth {
+    const { nombres, apellidos, correo, direccion, numero_direccion, numTel } = updateAuthDto;
+    user.nombres = nombres;
+    user.apellidos = apellidos;
+    user.correo = correo;
+    user.direccion = direccion;
+    user.numero_direccion = numero_direccion;
+    user.numTel = numTel;
+    return user;
+  }
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+
+
+  //! REMOVE
+  async remove(id: string) {
+    const user = await this.findOneById(id);
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+    await this.authRepository.delete(id);
   }
 }
