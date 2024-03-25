@@ -124,3 +124,11 @@ Después de agregar usuarios adicionales, permite al propietario de la empresa a
 Finalización del Registro:
 
 Una vez completado el proceso de registro y se han creado todos los usuarios y empresas necesarios, redirige al usuario a la página de inicio de sesión o a la página de inicio de la aplicación.
+
+
+
+
+Los productos:
+
+estos se podran buscar por nombre y etiqueta, estas etiquetas
+seran creadas por el mismo usuario, el sabra cuales son lsa que necesita
