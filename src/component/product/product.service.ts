@@ -4,6 +4,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { format } from 'date-fns';
 
 @Injectable()
 export class ProductService {
@@ -32,7 +33,7 @@ export class ProductService {
     newProduct.priceBuyProdcut = createProductDto.priceBuyProdcut;
     newProduct.priceSellProduct = createProductDto.priceSellProduct;
     newProduct.amountProduct = createProductDto.amountProduct;
-    
+    newProduct.dateCreateProduct = format(new Date(), 'dd/MM/yyyy');
     return newProduct;
   }
 
