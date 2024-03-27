@@ -19,6 +19,6 @@ export class Product {
     @Column({ type: 'bigint', nullable: false })
     amountProduct: number;
     
-    @CreateDateColumn({ type: 'timestamp' })
-    dateCreateProduct: Date;
+    @Column({ length: 50 })
+    dateCreateProduct: string;
 }

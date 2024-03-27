@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
@@ -13,14 +13,15 @@ export class ProductService {
     private productRepository: Repository<Product>,
   ) { }
 
-
+//! CREATE
   async create(createProductDto: CreateProductDto): Promise<Product> {
     try {
       const newProduct = this.mapCreateProductDtoToProductEntity(createProductDto);
       return await this.productRepository.save(newProduct);
 
     } catch (error) {
-      throw new InternalServerErrorException('Algo ha ocurrido', error);
+      console.log(error);
+      throw new InternalServerErrorException('Algo ha ocurrido');
     }
   }
 
@@ -31,21 +32,57 @@ export class ProductService {
     newProduct.priceBuyProdcut = createProductDto.priceBuyProdcut;
     newProduct.priceSellProduct = createProductDto.priceSellProduct;
     newProduct.amountProduct = createProductDto.amountProduct;
+    
     return newProduct;
   }
 
-  findAll() {
-    return `This action returns all product`;
+  private formatDate(date: Date): string {
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+  //! FIND ALL
+  async findAll(): Promise<Product[]> {
+    try {
+      return await this.productRepository.find();
+    } catch (error) {
+      throw new InternalServerErrorException('Error al buscar producto');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  //! FIND ONE ID
+  async findOneById(id: string): Promise<Product> {
+    try {
+      const user = await this.productRepository.findOne({ where: { id } });
+      if (!user) {
+        throw new NotFoundException('Producto no encontrado');
+      }
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException('Error al buscar usuario por ID');
+    }
   }
 
+  async findOneByName(nameProduct: string): Promise<Product> {
+    try {
+      const product = await this.productRepository.findOne({ where: { nameProduct } });
+      if (!product) {
+        throw new NotFoundException('Producto no encontrado');
+      }
+      return product;
+    } catch (error) {
+      throw new InternalServerErrorException('Error al buscar usuario por nameProduct');
+    }
+  }
+
+  //! UPDATE
   update(id: number, updateProductDto: UpdateProductDto) {
     return `This action updates a #${id} product`;
   }
 
+  //! REMOVE
   remove(id: number) {
     return `This action removes a #${id} product`;
   }
