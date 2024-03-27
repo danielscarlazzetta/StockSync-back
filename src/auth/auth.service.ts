@@ -4,6 +4,7 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import { Repository, FindOneOptions } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from './entities/auth.entity';
+import { format } from 'date-fns';
 
 @Injectable()
 export class AuthService {
@@ -41,6 +42,7 @@ export class AuthService {
     newUser.direccion = createUserDto.direccion;
     newUser.numero_direccion = createUserDto.numero_direccion;
     newUser.numTel = createUserDto.numTel;
+    newUser.fecha_Creacion = format(new Date(), 'dd/MM/yyyy');
     return newUser;
   }
   

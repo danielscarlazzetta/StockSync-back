@@ -24,8 +24,8 @@ export class Auth {
   @Column({ length: 20 })
   numTel: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  fecha_Creacion: Date;
+  @Column({ length: 50 })
+  fecha_Creacion: string;
 
   @Column({ type: 'enum', enum: SubscriptionPlan, default: SubscriptionPlan.BASICO })
   plan: SubscriptionPlan;
